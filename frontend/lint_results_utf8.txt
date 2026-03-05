@@ -1,0 +1,58 @@
+﻿
+> frontend@0.0.0 lint
+> eslint .
+
+
+C:\Users\hariv\OneDrive\Desktop\web 8\employee-wellness-system\frontend\src\components\BMICalculatorModal.jsx
+  36:19  error  'res' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\hariv\OneDrive\Desktop\web 8\employee-wellness-system\frontend\src\context\AuthContext.jsx
+   2:8   error  'axios' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           no-unused-vars
+  13:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  11 |         const userInfo = localStorage.getItem('user');
+  12 |         if (userInfo) {
+> 13 |             setUser(JSON.parse(userInfo));
+     |             ^^^^^^^ Avoid calling setState() directly within an effect
+  14 |         }
+  15 |         setLoading(false);
+  16 |     }, []);  react-hooks/set-state-in-effect
+
+C:\Users\hariv\OneDrive\Desktop\web 8\employee-wellness-system\frontend\src\pages\Dashboard.jsx
+  14:23  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  12 |         // Load guest data fallbacks
+  13 |         const savedBmi = localStorage.getItem('guest_bmi_data');
+> 14 |         if (savedBmi) setGuestBmi(JSON.parse(savedBmi));
+     |                       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  15 |
+  16 |         const savedProfile = localStorage.getItem('guest_profile_data');
+  17 |         if (savedProfile) setGuestProfile(JSON.parse(savedProfile));  react-hooks/set-state-in-effect
+  38:8   warning  React Hook useEffect has a missing dependency: 'user'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/exhaustive-deps
+
+C:\Users\hariv\OneDrive\Desktop\web 8\employee-wellness-system\frontend\src\pages\EmployeeDetails.jsx
+  57:22  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  55 |     const calculateTotalExperience = (joiningDate) => {
+  56 |         if (!joiningDate) return '0';
+> 57 |         const diff = Date.now() - new Date(joiningDate).getTime();
+     |                      ^^^^^^^^^^ Cannot call impure function
+  58 |         const yearsInCompany = diff / (1000 * 60 * 60 * 24 * 365.25);
+  59 |         return yearsInCompany.toFixed(1);
+  60 |     };  react-hooks/purity
+
+Γ£û 6 problems (5 errors, 1 warning) 

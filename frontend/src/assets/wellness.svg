@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f7fa" />
+      <stop offset="100%" stop-color="#ffffff" />
+    </linearGradient>
+    <linearGradient id="leaf-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#66bb6a" />
+      <stop offset="100%" stop-color="#43a047" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="400" fill="url(#bg-grad)" rx="10" />
+
+  <!-- Simplified Yoga Person -->
+  <g transform="translate(400, 200)">
+    <!-- Head -->
+    <circle cx="0" cy="-60" r="20" fill="#333" />
+    <!-- Body -->
+    <path d="M-15,-35 Q-25,0 -15,35 L-30,70 L-10,70 L0,35 L10,70 L30,70 L15,35 Q25,0 15,-35 Z" fill="#ff7043" />
+    <!-- Legs in Lotus -->
+    <path d="M-15,70 Q-40,90 -20,110 L20,110 Q40,90 15,70 Z" fill="#333" />
+  </g>
+
+  <!-- Decorative Leaves -->
+  <path d="M100,300 Q150,200 200,300 T300,300" fill="none" stroke="#81c784" stroke-width="5" opacity="0.5" />
+  <path d="M500,300 Q550,200 600,300 T700,300" fill="none" stroke="#81c784" stroke-width="5" opacity="0.5" />
+  
+  <g transform="translate(150, 150) rotate(-10)">
+      <path d="M0,0 Q20,-40 40,0 Q20,40 0,0 Z" fill="url(#leaf-grad)" />
+  </g>
+  <g transform="translate(650, 150) rotate(10)">
+      <path d="M0,0 Q20,-40 40,0 Q20,40 0,0 Z" fill="url(#leaf-grad)" />
+  </g>
+
+  <!-- Sun/Halo -->
+  <circle cx="400" cy="190" r="120" fill="#fff9c4" opacity="0.5" />
+</svg>

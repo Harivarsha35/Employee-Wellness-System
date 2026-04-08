@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import api from '../utils/api';
+import api, { imageBaseURL } from '../utils/api';
 import AuthContext from '../context/AuthContext';
 import { calculateWellness } from '../utils/wellnessUtils';
 
@@ -61,12 +61,12 @@ const HRDashboard = () => {
     const getIndividualWellness = (empId, bmiCategory) => {
         const empActivities = allActivities.filter(a => a.user && a.user._id === empId);
         const stats = calculateWellness(empActivities, bmiCategory);
-        return { 
-            status: stats.status, 
-            color: stats.color, 
-            avgS: stats.avgSleep, 
-            avgW: stats.avgWater, 
-            avgStr: stats.avgStress 
+        return {
+            status: stats.status,
+            color: stats.color,
+            avgS: stats.avgSleep,
+            avgW: stats.avgWater,
+            avgStr: stats.avgStress
         };
     };
 
@@ -93,7 +93,7 @@ const HRDashboard = () => {
 
         // Fixed start date: March 1st, 2026
         const fixedStartDate = new Date('2026-03-01T00:00:00');
-        
+
         // Start from joining date or March 1st, whichever is later
         let startDate = joiningDate ? new Date(joiningDate) : fixedStartDate;
         if (startDate < fixedStartDate) startDate = fixedStartDate;
@@ -129,7 +129,7 @@ const HRDashboard = () => {
         <div className="container-large">
             <h1>HR Dashboard</h1>
             <p>Welcome, {user && user.name} ({user && user.role})</p>
-            
+
             <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
                 {/* Missing Daily Update Notifications (Blackmark) */}
                 {missingLogEmployees.length > 0 && (
@@ -211,7 +211,7 @@ const HRDashboard = () => {
                                         <strong style={{ fontSize: '1.1rem' }}>{emp.name}</strong>
                                         <div style={{ fontSize: '0.9rem', color: '#666', marginBottom: '10px' }}>{emp.department} • {emp.role}</div>
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={() => handleSendHealthAlert(emp._id, emp.name)}
                                         style={{
                                             background: '#e74c3c',
@@ -252,7 +252,7 @@ const HRDashboard = () => {
                     <div className="card" style={{ width: '400px', padding: '25px', position: 'relative' }}>
                         <h3 style={{ marginBottom: '10px' }}>Missing Updates (Since March 1st): {selectedEmpForDetails.name}</h3>
                         <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '15px' }}>Specific days without a wellness update:</p>
-                        
+
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '300px', overflowY: 'auto', paddingRight: '5px' }}>
                             {getMissingDays(selectedEmpForDetails._id, selectedEmpForDetails.joiningDate)
                                 .filter(day => day.status === 'Missing')
@@ -273,9 +273,9 @@ const HRDashboard = () => {
                                 <p style={{ textAlign: 'center', color: '#27ae60', fontWeight: 'bold' }}>✅ All caught up!</p>
                             )}
                         </div>
-                        
-                        <button 
-                            className="btn" 
+
+                        <button
+                            className="btn"
                             style={{ marginTop: '20px', width: '100%' }}
                             onClick={() => setSelectedEmpForDetails(null)}
                         >
@@ -316,7 +316,7 @@ const HRDashboard = () => {
                                     <td style={{ padding: '16px' }}>
                                         {emp.profilePhoto ? (
                                             <img
-                                                src={`http://localhost:5000${emp.profilePhoto}`}
+                                                src={`${imageBaseURL}${emp.profilePhoto}`}
                                                 alt={emp.name}
                                                 style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }}
                                             />

@@ -10,7 +10,13 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production' 
+        ? 'https://employee-wellness-system-lc8p.vercel.app' 
+        : true, // Allow request's origin in development
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -39,4 +45,9 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server started on port ${port}`));
+// Only listen locally, Vercel will handle the server in production
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => console.log(`Server started on port ${port}`));
+}
+
+module.exports = app;

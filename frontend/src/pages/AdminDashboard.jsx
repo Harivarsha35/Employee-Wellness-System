@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import api from '../utils/api';
+import api, { imageBaseURL } from '../utils/api';
 import AuthContext from '../context/AuthContext';
 import { calculateWellness } from '../utils/wellnessUtils';
 
@@ -38,11 +38,11 @@ const AdminDashboard = () => {
     const getIndividualWellness = (empId, bmiCategory) => {
         const empActivities = allActivities.filter(a => a.user && a.user._id === empId);
         const stats = calculateWellness(empActivities, bmiCategory);
-        return { 
-            status: stats.status, 
-            color: stats.color, 
-            avgS: stats.avgSleep, 
-            avgW: stats.avgWater 
+        return {
+            status: stats.status,
+            color: stats.color,
+            avgS: stats.avgSleep,
+            avgW: stats.avgWater
         };
     };
 
@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                                     <td style={{ padding: '16px' }}>
                                         {emp.profilePhoto ? (
                                             <img
-                                                src={`http://localhost:5000${emp.profilePhoto}`}
+                                                src={`${imageBaseURL}${emp.profilePhoto}`}
                                                 alt={emp.name}
                                                 style={{ width: '60px', height: '60px', borderRadius: '50%', objectFit: 'cover' }}
                                             />

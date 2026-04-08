@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import AuthContext from '../context/AuthContext';
-import api from '../utils/api';
+import api, { imageBaseURL } from '../utils/api';
 
 const EmployeeDetails = () => {
     const { user, login } = useContext(AuthContext); // Assuming login can be used to update user context or we need a specific 'updateUser' function in context
@@ -145,7 +145,7 @@ const EmployeeDetails = () => {
                     <div style={styles.profilePhotoContainer}>
                         {user.profilePhoto ? (
                             <img
-                                src={`http://localhost:5000${user.profilePhoto}`}
+                                src={`${imageBaseURL}${user.profilePhoto}`}
                                 alt="Profile"
                                 style={styles.profilePhoto}
                             />

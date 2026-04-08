@@ -17,6 +17,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/activities', require('./routes/activityRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 // Explicitly handle 404 for API routes to avoid falling through to frontend
 app.use('/api', (req, res) => {

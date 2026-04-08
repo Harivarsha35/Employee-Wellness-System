@@ -130,7 +130,30 @@ const loginUser = async (req, res) => {
 // @route   GET /api/users/me
 // @access  Private
 const getMe = async (req, res) => {
-    res.status(200).json(req.user);
+    const user = req.user;
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        age: user.age,
+        gender: user.gender,
+        department: user.department,
+        role: user.role,
+        maritalStatus: user.maritalStatus,
+        shift: user.shift,
+        location: user.location,
+        bmi: user.bmi,
+        bmiCategory: user.bmiCategory,
+        bloodGroup: user.bloodGroup,
+        joiningDate: user.joiningDate,
+        salaryPackage: user.salaryPackage,
+        smokingHabit: user.smokingHabit,
+        alcoholConsumption: user.alcoholConsumption,
+        totalLeaves: user.totalLeaves || 20,
+        leaveBalance: await getLeaveBalance(user._id, user.totalLeaves),
+        profilePhoto: user.profilePhoto || '',
+    });
 };
 
 // @desc    Update user profile

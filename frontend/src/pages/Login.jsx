@@ -34,7 +34,7 @@ const Login = () => {
     };
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '10vh' }}>
             {/* Back to Home Button */}
             <button
                 onClick={() => navigate('/')}
@@ -60,7 +60,7 @@ const Login = () => {
 
             <div className="container" style={{ maxWidth: '400px', width: '100%', padding: '20px' }}>
                 <div className="card">
-                    <h2>Login</h2>
+                    <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Login</h2>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <form onSubmit={handleSubmit} className="inputs">
                         <select
@@ -69,7 +69,6 @@ const Login = () => {
                             style={{ marginBottom: '15px', padding: '10px', width: '100%' }}
                         >
                             <option value="Employee">Employee</option>
-                            <option value="Admin">Admin</option>
                             <option value="HR">HR</option>
                         </select>
                         <input

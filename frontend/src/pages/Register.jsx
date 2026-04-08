@@ -61,13 +61,13 @@ const Register = () => {
     };
 
     return (
-        <div className="register-page" style={{ position: 'relative' }}>
+        <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '10vh' }}>
             {/* Back to Home Button */}
             <button
                 onClick={() => navigate('/')}
                 style={{
-                    position: 'fixed',
-                    top: '20px',
+                    position: 'absolute',
+                    top: '-85px',
                     right: '20px',
                     background: '#fff',
                     border: 'none',
@@ -77,20 +77,20 @@ const Register = () => {
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    zIndex: 1000
                 }}
             >
                 <ArrowLeft size={24} color="#333" />
             </button>
 
-            <div className="container" style={{ maxWidth: '500px', marginTop: '50px' }}>
+            <div className="container" style={{ maxWidth: '400px', width: '100%', padding: '20px' }}>
                 <div className="card">
                     <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Register</h2>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <form onSubmit={handleSubmit} className="inputs">
                         <select name="role" onChange={handleChange} value={formData.role} style={{ marginBottom: '10px', padding: '10px', width: '100%' }}>
                             <option value="Employee">Employee</option>
-                            <option value="Admin">Admin</option>
                             <option value="HR">HR</option>
                         </select>
                         <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />

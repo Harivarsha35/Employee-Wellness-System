@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import api from '../utils/api';
 import AuthContext from '../context/AuthContext';
+import { calculateWellness } from '../utils/wellnessUtils';
 
 const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -32,48 +33,17 @@ const AdminDashboard = () => {
         return yearsInCompany.toFixed(1);
     };
 
-    // Calculate system-wide averages
-    const totalActivities = allActivities.length;
-    const avgSleep = allActivities.reduce((acc, curr) => acc + curr.sleepHours, 0) / (totalActivities || 1);
-    const avgWater = allActivities.reduce((acc, curr) => acc + curr.waterIntake, 0) / (totalActivities || 1);
-    const avgStress = allActivities.reduce((acc, curr) => acc + (Number(curr.stressLevel) || 5), 0) / (totalActivities || 1);
+    const wellness = calculateWellness(allActivities, user?.bmiCategory);
 
-    const getWellnessStatus = () => {
-        if (totalActivities === 0) return { status: 'N/A', color: '#aaa', icon: '📝' };
-        if (totalActivities < 1) return { status: 'Gathering Data', color: '#7f8c8d', icon: '⏳' };
-
-        if (avgSleep >= 7 && avgWater >= 2 && avgStress <= 4) {
-            return { status: 'Highly Productive', color: '#27ae60', icon: '😇' };
-        } else if (avgSleep < 6 || avgStress > 7) {
-            return { status: 'High Burnout Risk', color: '#e74c3c', icon: '😴' };
-        } else {
-            return { status: 'Moderate Balance', color: '#f39c12', icon: '⚖️' };
-        }
-    };
-
-    const wellness = getWellnessStatus();
-
-    const getIndividualWellness = (empId) => {
+    const getIndividualWellness = (empId, bmiCategory) => {
         const empActivities = allActivities.filter(a => a.user && a.user._id === empId);
-        const count = empActivities.length;
-        if (count === 0) return { status: 'N/A', color: '#aaa' };
-
-        const avgS = empActivities.reduce((acc, curr) => acc + curr.sleepHours, 0) / count;
-        const avgW = empActivities.reduce((acc, curr) => acc + curr.waterIntake, 0) / count;
-        const avgStr = empActivities.reduce((acc, curr) => acc + (Number(curr.stressLevel) || 5), 0) / count;
-
-        let status = 'Balanced';
-        let color = '#f39c12';
-
-        if (avgS >= 7 && avgW >= 2 && avgStr <= 4) {
-            status = 'Healthy';
-            color = '#27ae60';
-        } else if (avgS < 6 || avgStr > 7) {
-            status = 'At Risk';
-            color = '#e74c3c';
-        }
-
-        return { status, color, avgS: avgS.toFixed(1), avgW: avgW.toFixed(1) };
+        const stats = calculateWellness(empActivities, bmiCategory);
+        return { 
+            status: stats.status, 
+            color: stats.color, 
+            avgS: stats.avgSleep, 
+            avgW: stats.avgWater 
+        };
     };
 
     const summaryCardStyle = {
@@ -111,9 +81,9 @@ const AdminDashboard = () => {
                                 <th style={{ padding: '16px', fontSize: '1.1rem' }}>Salary</th>
                                 <th style={{ padding: '16px', fontSize: '1.1rem' }}>Smoking</th>
                                 <th style={{ padding: '16px', fontSize: '1.1rem' }}>Alcohol</th>
-                                <th style={{ padding: '16px', fontSize: '1.1rem' }}>Avg Sleep</th>
-                                <th style={{ padding: '16px', fontSize: '1.1rem' }}>Avg Water</th>
-                                <th style={{ padding: '16px', fontSize: '1.1rem' }}>Wellness</th>
+                                <th style={{ padding: '16px', fontSize: '1.1rem', textAlign: 'center' }}>Avg Sleep</th>
+                                <th style={{ padding: '16px', fontSize: '1.1rem', textAlign: 'center' }}>Avg Water</th>
+                                <th style={{ padding: '16px', fontSize: '1.1rem', textAlign: 'center' }}>Wellness</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -155,19 +125,23 @@ const AdminDashboard = () => {
                                     <td style={{ padding: '16px', fontSize: '1.1rem' }}>{emp.smokingHabit || '-'}</td>
                                     <td style={{ padding: '16px', fontSize: '1.1rem' }}>{emp.alcoholConsumption || '-'}</td>
                                     {(() => {
-                                        const stats = getIndividualWellness(emp._id);
+                                        const stats = getIndividualWellness(emp._id, emp.bmiCategory);
                                         return (
                                             <>
-                                                <td style={{ padding: '16px', fontSize: '1.1rem' }}>{stats.avgS ? `${stats.avgS}h` : '-'}</td>
-                                                <td style={{ padding: '16px', fontSize: '1.1rem' }}>{stats.avgW ? `${stats.avgW}L` : '-'}</td>
-                                                <td style={{ padding: '16px' }}>
+                                                <td style={{ padding: '16px', fontSize: '1.1rem', textAlign: 'center' }}>{stats.avgS ? `${stats.avgS}h` : '-'}</td>
+                                                <td style={{ padding: '16px', fontSize: '1.1rem', textAlign: 'center' }}>{stats.avgW ? `${stats.avgW}L` : '-'}</td>
+                                                <td style={{ padding: '16px', textAlign: 'center' }}>
                                                     <span style={{
                                                         padding: '6px 12px',
                                                         borderRadius: '6px',
                                                         background: stats.color,
                                                         color: '#fff',
-                                                        fontSize: '0.95rem',
-                                                        fontWeight: 'bold'
+                                                        fontSize: '0.9rem',
+                                                        fontWeight: 'bold',
+                                                        display: 'inline-block',
+                                                        minWidth: '90px',
+                                                        textAlign: 'center',
+                                                        whiteSpace: 'nowrap'
                                                     }}>
                                                         {stats.status}
                                                     </span>
@@ -194,7 +168,7 @@ const AdminDashboard = () => {
                                     <li><strong>Exercise:</strong> {activity.exerciseType || 'Other'} ({activity.exerciseDuration || activity.exerciseTime || 0} mins)</li>
                                     <li><strong>Water:</strong> {activity.waterIntake} L</li>
                                     <li><strong>Sleep:</strong> {activity.sleepHours} hrs</li>
-                                    <li><strong>Stress Level:</strong> {activity.stressLevel}/10</li>
+                                    <li><strong>Stress Level:</strong> {activity.stressLevel}/5</li>
                                     <li><strong>Employment Type:</strong> {activity.employmentType || 'Full Time'}</li>
                                     <li><strong>Diet Plan:</strong> {activity.dietPlan}</li>
                                     {activity.notes && <li style={{ marginTop: '5px', fontStyle: 'italic' }}><strong>Note:</strong> "{activity.notes}"</li>}

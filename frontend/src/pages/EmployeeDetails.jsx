@@ -181,7 +181,7 @@ const EmployeeDetails = () => {
                         <p><strong>Smoking Habit:</strong> {user.smokingHabit || 'Not set'}</p>
                         <p><strong>Alcohol Consumption:</strong> {user.alcoholConsumption || 'Not set'}</p>
 
-                        <p><strong>Total Leaves:</strong> {user.totalLeaves || 20}</p>
+                        <p><strong>Leaves Taken:</strong> {(user.totalLeaves || 20) - (user.leaveBalance ?? (user.totalLeaves || 20))}</p>
                         <button onClick={() => setIsEditing(true)} className="btn" style={{ marginTop: '20px' }}>Edit Profile</button>
                     </div>
                 ) : (

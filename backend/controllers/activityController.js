@@ -14,10 +14,23 @@ const getActivities = async (req, res) => {
 // @route   POST /api/activities
 // @access  Private
 const setActivity = async (req, res) => {
-    console.log('Received Activity Data:', req.body); // Debug Log
-    if (!req.body.exerciseTime && !req.body.waterIntake && !req.body.sleepHours) {
-        // Just a basic check, can be more specific
-        // return res.status(400).json({ message: 'Please add activity details' });
+    console.log('Received Activity Data:', req.body);
+
+    // Check if employee already logged activity today
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const existingToday = await Activity.findOne({
+        user: req.user.id,
+        createdAt: { $gte: todayStart, $lte: todayEnd }
+    });
+
+    if (existingToday) {
+        return res.status(400).json({
+            message: 'You have already logged your activity for today. Come back tomorrow!'
+        });
     }
 
     const activity = await Activity.create({
@@ -41,7 +54,7 @@ const setActivity = async (req, res) => {
 // @route   GET /api/activities/all
 // @access  Private (Admin/HR)
 const getAllActivities = async (req, res) => {
-    const activities = await Activity.find().populate('user', 'name email department').sort({ createdAt: -1 });
+    const activities = await Activity.find().populate('user', 'name email department role').sort({ createdAt: -1 });
     const validActivities = activities.filter(activity => activity.user !== null);
     res.status(200).json(validActivities);
 };

@@ -28,11 +28,11 @@ const activitySchema = mongoose.Schema({
         default: 0
     },
     stressLevel: {
-        type: Number, // 1-10
+        type: Number, // 0-5
         required: true,
-        min: 1,
-        max: 10,
-        default: 5
+        min: 0,
+        max: 5,
+        default: 0
     },
     dietPlan: {
         type: String, // e.g., "Balanced", "Keto", etc.

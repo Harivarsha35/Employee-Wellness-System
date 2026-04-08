@@ -91,15 +91,60 @@ const BMICalculatorModal = ({ isOpen, onClose }) => {
                             required
                         />
                     </div>
-                    <button type="submit" style={styles.submitBtn}>Calculate BMI</button>
+                    <button type="submit" className="bmi-submit-btn" style={styles.submitBtn}>Calculate BMI</button>
                 </form>
 
                 {bmi && (
                     <div style={styles.result}>
                         <h3 style={styles.bmiValue}>Your BMI: {bmi}</h3>
                         <p style={{ ...styles.category, color: getCategoryColor(category) }}>Category: {category}</p>
+
+                        {(category === 'Overweight' || category === 'Obese') && (
+                            <div style={styles.tipsBox}>
+                                <p style={styles.tipsTitle}>💡 Tips to Reduce Weight</p>
+                                <ul style={styles.tipsList}>
+                                    <li>🥗 Eat more vegetables, fruits & whole grains</li>
+                                    <li>🚶 Walk at least 30 minutes every day</li>
+                                    <li>💧 Drink 8–10 glasses of water daily</li>
+                                    <li>🍽️ Avoid processed food, sugary drinks & junk food</li>
+                                    <li>😴 Get 7–8 hours of sleep every night</li>
+                                    <li>🏋️ Try strength training 3 times a week</li>
+                                    <li>🧘 Manage stress — high stress leads to weight gain</li>
+                                    <li>🩺 Consult a doctor or dietitian for a personalized plan</li>
+                                </ul>
+                            </div>
+                        )}
+
+                        {category === 'Underweight' && (
+                            <div style={{ ...styles.tipsBox, borderColor: '#f39c12', backgroundColor: '#fffbea' }}>
+                                <p style={{ ...styles.tipsTitle, color: '#b7770d' }}>💡 Tips to Gain Healthy Weight</p>
+                                <ul style={styles.tipsList}>
+                                    <li>🥜 Eat nutrient-rich foods: nuts, dairy, eggs</li>
+                                    <li>🍚 Increase meal frequency — eat 5–6 small meals</li>
+                                    <li>🏋️ Do strength/resistance exercises to build muscle</li>
+                                    <li>🩺 Consult a doctor to rule out underlying causes</li>
+                                </ul>
+                            </div>
+                        )}
+
+                        {category === 'Normal weight' && (
+                            <p style={{ marginTop: '12px', color: '#27ae60', fontWeight: '600', fontSize: '0.95rem' }}>✅ Great! Keep maintaining your healthy lifestyle.</p>
+                        )}
                     </div>
                 )}
+                <style>{`
+                    .bmi-submit-btn {
+                        transition: all 0.3s ease !important;
+                    }
+                    .bmi-submit-btn:hover {
+                        background-color: #38a169 !important;
+                        box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+                        transform: translateY(-1px);
+                    }
+                    .bmi-submit-btn:active {
+                        transform: translateY(1px);
+                    }
+                `}</style>
             </div>
         </div>
     );
@@ -133,7 +178,9 @@ const styles = {
         padding: '2rem',
         borderRadius: '12px',
         width: '90%',
-        maxWidth: '400px',
+        maxWidth: '460px',
+        maxHeight: '85vh',
+        overflowY: 'auto',
         boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
         position: 'relative'
     },
@@ -179,7 +226,7 @@ const styles = {
         fontSize: '1rem'
     },
     submitBtn: {
-        backgroundColor: '#4a90e2',
+        backgroundColor: '#48bb78',
         color: '#fff',
         padding: '12px',
         borderRadius: '6px',
@@ -205,6 +252,27 @@ const styles = {
         margin: 0,
         fontWeight: 'bold',
         fontSize: '1.1rem'
+    },
+    tipsBox: {
+        marginTop: '15px',
+        padding: '12px 15px',
+        borderRadius: '8px',
+        border: '1px solid #e74c3c',
+        backgroundColor: '#fff5f5',
+        textAlign: 'left'
+    },
+    tipsTitle: {
+        fontWeight: 'bold',
+        color: '#c0392b',
+        marginBottom: '8px',
+        fontSize: '0.95rem'
+    },
+    tipsList: {
+        margin: 0,
+        paddingLeft: '18px',
+        fontSize: '0.88rem',
+        color: '#444',
+        lineHeight: '1.8'
     }
 };
 

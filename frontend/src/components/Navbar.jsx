@@ -26,36 +26,57 @@ const Navbar = () => {
                             {!['/login', '/register', '/'].includes(location.pathname) && (
                                 <>
                                     <li>
-                                        <Link to={user.role === 'HR' ? "/hr-dashboard" : user.role === 'Admin' ? "/admin-dashboard" : "/dashboard"} style={styles.link}>
+                                        <Link to={user.role === 'HR' ? "/hr-dashboard" : user.role === 'Admin' ? "/admin-dashboard" : "/dashboard"} className="nav-link" style={styles.link}>
                                             <LayoutDashboard size={18} /> Dashboard
                                         </Link>
                                     </li>
-                                    <li><Link to="/employee-details" style={styles.link}><User size={18} /> Profile</Link></li>
+                                    <li><Link to="/employee-details" className="nav-link" style={styles.link}><User size={18} /> Profile</Link></li>
                                     {user.role !== 'HR' && user.role !== 'Admin' && (
                                         <>
-                                            <li><Link to="/update-activity" style={styles.link}><Activity size={18} /> Update Activity</Link></li>
+                                            <li><Link to="/update-activity" className="nav-link" style={styles.link}><Activity size={18} /> Update Activity</Link></li>
                                             <li>
-                                                <button onClick={() => setIsBMIModalOpen(true)} style={styles.bmiBtn}>
+                                                <button onClick={() => setIsBMIModalOpen(true)} className="bmi-nav-btn" style={styles.bmiBtn}>
                                                     <Calculator size={18} /> BMI Calculation
                                                 </button>
                                             </li>
                                         </>
                                     )}
-                                    <li><button onClick={handleLogout} style={styles.btn}><LogOut size={18} /> Logout</button></li>
+                                    <li><button onClick={handleLogout} className="btn" style={{ ...styles.btn, height: '35px', padding: '0 15px' }}><LogOut size={18} /> Logout</button></li>
                                     <BMICalculatorModal isOpen={isBMIModalOpen} onClose={() => setIsBMIModalOpen(false)} />
+                                    <style>{`
+                                        .bmi-nav-btn, .nav-link, .nav-btn {
+                                            transition: all 0.3s ease !important;
+                                            text-decoration: none !important;
+                                            display: inline-flex !important;
+                                            align-items: center !important;
+                                            gap: 5px !important;
+                                        }
+                                        .bmi-nav-btn:hover, .nav-link:hover, .nav-btn:hover {
+                                            color: #4a90e2 !important;
+                                            transform: translateY(-2px);
+                                        }
+                                        .bmi-nav-btn svg, .nav-link svg, .nav-btn svg {
+                                            transition: transform 0.3s ease !important;
+                                            vertical-align: middle;
+                                            margin-top: 2px;
+                                        }
+                                        .bmi-nav-btn:hover svg, .nav-link:hover svg, .nav-btn:hover svg {
+                                            transform: rotate(15deg);
+                                        }
+                                    `}</style>
                                 </>
                             )}
                             {location.pathname === '/' && (
                                 <>
-                                    <li><Link to="/login" style={styles.navBtn}><LogIn size={16} style={{ marginRight: '5px' }} /> Login</Link></li>
-                                    <li style={{ marginLeft: '10px' }}><Link to="/register" style={styles.navBtn}><UserPlus size={16} style={{ marginRight: '5px' }} /> Register</Link></li>
+                                    <li><Link to="/login" className="nav-btn"><LogIn size={16} style={{ marginRight: '5px' }} /> Login</Link></li>
+                                    <li style={{ marginLeft: '10px' }}><Link to="/register" className="nav-btn"><UserPlus size={16} style={{ marginRight: '5px' }} /> Register</Link></li>
                                 </>
                             )}
                         </>
                     ) : (
                         <>
                             {!['/login', '/register', '/'].includes(location.pathname) && (
-                                <li><Link to="/dashboard" style={styles.link}><LayoutDashboard size={18} /> Dashboard</Link></li>
+                                <li><Link to="/dashboard" className="nav-link" style={styles.link}><LayoutDashboard size={18} /> Dashboard</Link></li>
                             )}
                             {!['/login', '/register'].includes(location.pathname) && (
                                 <>
@@ -116,7 +137,10 @@ const styles = {
         cursor: 'pointer'
     },
     navBtn: {
-        display: 'inline-block',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '5px',
         padding: '5px 15px',
         background: '#4a90e2',
         color: '#fff',

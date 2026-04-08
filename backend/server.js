@@ -48,18 +48,10 @@ app.use('/api', (req, res) => {
     res.status(404).json({ message: `API route not found: ${req.method} ${req.originalUrl}` });
 });
 
-// Serve frontend
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-    app.get('*', (req, res) =>
-        res.sendFile(
-            path.resolve(__dirname, '../', 'frontend', 'dist', 'index.html')
-        )
-    );
-} else {
-    app.get('/', (req, res) => res.send('Please set to production'));
-}
+// Root route for API status
+app.get('/', (req, res) => {
+    res.send('Employee Wellness API is running...');
+});
 
 app.use(errorHandler);
 
